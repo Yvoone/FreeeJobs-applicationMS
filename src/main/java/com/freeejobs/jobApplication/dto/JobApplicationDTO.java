@@ -5,6 +5,7 @@ public class JobApplicationDTO {
     private long id;
 	private long jobId;
 	private long applicantId;
+	private String status;
     private String description;
 
     public long getId() {
@@ -25,5 +26,9 @@ public class JobApplicationDTO {
 
 	public String getDescription() {
 		return description;
+	}
+
+	public String getStatus() {
+		return status;
 	}
 }

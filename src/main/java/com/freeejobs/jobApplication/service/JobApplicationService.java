@@ -24,7 +24,18 @@ public class JobApplicationService {
 	}
 
 	public List<JobApplication> listJobApplicantsByJobId(long jobId) {
-		return jobApplicationRepository.findByJobId(jobId);
+		return jobApplicationRepository.findAllJobApplicationByJobIdAndStatus(jobId, "PA");
+	}
+
+	public List<JobApplication> listAcceptedJobApplicantsByJobId(long jobId) {
+		return jobApplicationRepository.findAllJobApplicationByJobIdAndStatus(jobId, "A");
+	}
+
+	private JobApplication getJobApplicationByJobIdAndApplicantId (long jobId, long applicantId) {
+		JobApplication jobApp = null;
+
+		jobApp = jobApplicationRepository.findByJobIdAndApplicantId(jobId, applicantId);
+		return jobApp;
 	}
 
 	public JobApplication applyJob(JobApplicationDTO jobAppDTO) {
@@ -32,9 +43,40 @@ public class JobApplicationService {
 		jobApp.setApplicantId(jobAppDTO.getApplicantId());
 		jobApp.setJobId(jobAppDTO.getJobId());
 		jobApp.setDescription(jobAppDTO.getDescription());
-		jobApp.setStatus("Pending");
+		jobApp.setStatus("PA");
 
 		return jobApplicationRepository.save(jobApp);
+	}
+
+	public JobApplication setAppStatus(JobApplicationDTO jobAppDTO) {
+		if (jobAppDTO.getStatus().equals("A")) {
+			updateAllApplicants(jobAppDTO.getJobId(), "R");
+		}
+		else if (!jobAppDTO.getStatus().equals("R")) {
+			return null;
+		}
+
+		JobApplication jobApp = getJobApplicationByJobIdAndApplicantId(jobAppDTO.getJobId(), jobAppDTO.getApplicantId());
+		jobApp.setStatus(jobAppDTO.getStatus());
+
+		return jobApplicationRepository.save(jobApp);
+	}
+
+	public JobApplication closeAppStatus(JobApplicationDTO jobAppDTO) {
+		JobApplication jobApp = new JobApplication();
+		jobApp.setStatus(jobAppDTO.getStatus());
+		if (jobAppDTO.getStatus().equals("C")) {
+			updateAllApplicants(jobAppDTO.getJobId(), jobAppDTO.getStatus());
+		}
+		else {
+			return null;
+		}
+
+		return jobApplicationRepository.save(jobApp);
+	}
+
+	private void updateAllApplicants(long jobId, String status) {
+		jobApplicationRepository.updateAllAppStatusbyJobId(jobId, status);
 	}
 
 	public List<JobApplication> listJobApplicationByApplicantId(long applicantId) {

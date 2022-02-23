@@ -54,6 +54,33 @@ public class JobApplicationController {
 		return jobApplication;
 	}
 
+	@RequestMapping(value="/listAcceptedApplicantsByJobId", method= RequestMethod.GET)
+	public List<JobApplication> listAcceptedApplicantsByJobId(HttpServletResponse response,
+			@RequestParam long jobId) throws URISyntaxException {
+
+		List<JobApplication> jobApplication = null;
+
+		try {
+			System.out.println(jobId);
+			jobApplication = jobApplicationService.listAcceptedJobApplicantsByJobId(jobId);
+				if(jobApplication == null) {
+					System.out.println("null");
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					return null;
+				} else {
+					response.setStatus(HttpServletResponse.SC_OK);
+				}
+
+
+
+		} catch (Exception e) {
+			System.out.println(e);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return null;
+		}
+		return jobApplication;
+	}
+
 	@RequestMapping(value="/applyJob", method= RequestMethod.POST)
 	public JobApplication applyJob(HttpServletResponse response,
 			@RequestBody JobApplicationDTO jobAppDTO) throws URISyntaxException {
@@ -79,6 +106,60 @@ public class JobApplicationController {
 			return null;
 		}
 		return applyjob;
+	}
+
+	@RequestMapping(value="/setAppStatus", method= RequestMethod.POST)
+	public JobApplication setApplicationStatus(HttpServletResponse response,
+			@RequestBody JobApplicationDTO jobAppDTO) throws URISyntaxException {
+
+		JobApplication setAppStatus = null;
+
+		try {
+			System.out.println(jobAppDTO.getJobId());
+			setAppStatus = jobApplicationService.setAppStatus(jobAppDTO);
+				if(setAppStatus == null) {
+					System.out.println("null");
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					return null;
+				} else {
+					response.setStatus(HttpServletResponse.SC_OK);
+				}
+
+
+
+		} catch (Exception e) {
+			System.out.println(e);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return null;
+		}
+		return setAppStatus;
+	}
+
+	@RequestMapping(value="/closeAppStatus", method= RequestMethod.POST)
+	public JobApplication closeAppStatus(HttpServletResponse response,
+			@RequestBody JobApplicationDTO jobAppDTO) throws URISyntaxException {
+
+		JobApplication closeAppStatus = null;
+
+		try {
+			System.out.println(jobAppDTO.getJobId());
+			closeAppStatus = jobApplicationService.closeAppStatus(jobAppDTO);
+				if(closeAppStatus == null) {
+					System.out.println("null");
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					return null;
+				} else {
+					response.setStatus(HttpServletResponse.SC_OK);
+				}
+
+
+
+		} catch (Exception e) {
+			System.out.println(e);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return null;
+		}
+		return closeAppStatus;
 	}
 
 }
