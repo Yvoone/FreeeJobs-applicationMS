@@ -82,5 +82,9 @@ public class JobApplicationService {
 	public List<JobApplication> listJobApplicationByApplicantId(long applicantId) {
 		return jobApplicationRepository.findByApplicantId(applicantId);
 	}
+	
+	public List<JobApplication> listAcceptedJobApplicationByApplicantId(long applicantId) {
+		return jobApplicationRepository.findAllJobApplicationByApplicantIdAndStatus(applicantId, "A");
+	}
 
 }

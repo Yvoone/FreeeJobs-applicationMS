@@ -28,5 +28,7 @@ public interface JobApplicationRepository extends JpaRepository<JobApplication, 
 	@Transactional
 	@Query("update JobApplication t set t.status = :status where t.jobId = :jobId")
 	public void updateAllAppStatusbyJobId(@Param("jobId") long jobId, @Param("status") String status);
+	
+	public List<JobApplication> findAllJobApplicationByApplicantIdAndStatus(long applicantId, String status);
 
 }

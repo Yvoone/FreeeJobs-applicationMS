@@ -162,15 +162,15 @@ public class JobApplicationController {
 		return closeAppStatus;
 	}
 
-	@RequestMapping(value="/listJobApplicationByApplicantId", method= RequestMethod.GET)
-	public List<JobApplication> listJobApplicationByApplicantId(HttpServletResponse response,
+	@RequestMapping(value="/listAcceptedJobApplicationByApplicantId", method= RequestMethod.GET)
+	public List<JobApplication> listAcceptedJobApplicationByApplicantId(HttpServletResponse response,
 			@RequestParam long applicantId) throws URISyntaxException {
 
 		List<JobApplication> jobApplication = null;
 
 		try {
 			System.out.println(applicantId);
-			jobApplication = jobApplicationService.listJobApplicationByApplicantId(applicantId);
+			jobApplication = jobApplicationService.listAcceptedJobApplicationByApplicantId(applicantId);
 				if(jobApplication == null) {
 					System.out.println("null");
 					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
