@@ -87,4 +87,14 @@ public class JobApplicationService {
 		return jobApplicationRepository.findAllJobApplicationByApplicantIdAndStatus(applicantId, "A");
 	}
 
+	public List<JobApplication> listJobApplicationByApplicantIdAndStatus(long applicantId, String status) {
+		System.out.println("status:"+status);
+		if (status.isEmpty()) {
+			return jobApplicationRepository.findByApplicantId(applicantId);
+		}else {
+			return jobApplicationRepository.findAllJobApplicationByApplicantIdAndStatus(applicantId, status);
+		}
+		
+	}
+
 }
