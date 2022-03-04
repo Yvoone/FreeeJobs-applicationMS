@@ -31,7 +31,7 @@ public class JobApplicationService {
 		return jobApplicationRepository.findAllJobApplicationByJobIdAndStatus(jobId, "A");
 	}
 
-	private JobApplication getJobApplicationByJobIdAndApplicantId (long jobId, long applicantId) {
+	public JobApplication getJobApplicationByJobIdAndApplicantId (long jobId, long applicantId) {
 		JobApplication jobApp = null;
 
 		jobApp = jobApplicationRepository.findByJobIdAndApplicantId(jobId, applicantId);
@@ -40,10 +40,13 @@ public class JobApplicationService {
 
 	public JobApplication applyJob(JobApplicationDTO jobAppDTO) {
 		JobApplication jobApp = new JobApplication();
+		Date currDate = new Date();
 		jobApp.setApplicantId(jobAppDTO.getApplicantId());
 		jobApp.setJobId(jobAppDTO.getJobId());
 		jobApp.setDescription(jobAppDTO.getDescription());
 		jobApp.setStatus("PA");
+		jobApp.setDateCreated(currDate);
+		jobApp.setDateUpdated(currDate);
 
 		return jobApplicationRepository.save(jobApp);
 	}
@@ -58,6 +61,7 @@ public class JobApplicationService {
 
 		JobApplication jobApp = getJobApplicationByJobIdAndApplicantId(jobAppDTO.getJobId(), jobAppDTO.getApplicantId());
 		jobApp.setStatus(jobAppDTO.getStatus());
+		jobApp.setDateUpdated(new Date());
 
 		return jobApplicationRepository.save(jobApp);
 	}
@@ -71,18 +75,18 @@ public class JobApplicationService {
 		else {
 			return null;
 		}
-
+		jobApp.setDateUpdated(new Date());
 		return jobApplicationRepository.save(jobApp);
 	}
 
 	private void updateAllApplicants(long jobId, String status) {
-		jobApplicationRepository.updateAllAppStatusbyJobId(jobId, status);
+		jobApplicationRepository.updateAllAppStatusbyJobId(jobId, status, new Date());
 	}
 
 	public List<JobApplication> listJobApplicationByApplicantId(long applicantId) {
 		return jobApplicationRepository.findByApplicantId(applicantId);
 	}
-	
+
 	public List<JobApplication> listAcceptedJobApplicationByApplicantId(long applicantId) {
 		return jobApplicationRepository.findAllJobApplicationByApplicantIdAndStatus(applicantId, "A");
 	}
@@ -94,7 +98,7 @@ public class JobApplicationService {
 		}else {
 			return jobApplicationRepository.findAllJobApplicationByApplicantIdAndStatus(applicantId, status);
 		}
-		
+
 	}
 
 }

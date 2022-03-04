@@ -26,9 +26,9 @@ public interface JobApplicationRepository extends JpaRepository<JobApplication, 
 
 	@Modifying
 	@Transactional
-	@Query("update JobApplication t set t.status = :status where t.jobId = :jobId")
-	public void updateAllAppStatusbyJobId(@Param("jobId") long jobId, @Param("status") String status);
-	
+	@Query("update JobApplication t set t.status = :status, t.dateUpdated = :currDate where t.jobId = :jobId")
+	public void updateAllAppStatusbyJobId(@Param("jobId") long jobId, @Param("status") String status, @Param("currDate") Date currDate);
+
 	public List<JobApplication> findAllJobApplicationByApplicantIdAndStatus(long applicantId, String status);
 
 }

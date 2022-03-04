@@ -1,4 +1,4 @@
-package com.freeejobs.application.response;
+package com.freeejobs.jobApplication.response;
 
 public class Status {
 
