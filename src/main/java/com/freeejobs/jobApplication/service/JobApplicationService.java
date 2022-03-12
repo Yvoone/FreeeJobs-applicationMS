@@ -1,5 +1,6 @@
 package com.freeejobs.jobApplication.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
