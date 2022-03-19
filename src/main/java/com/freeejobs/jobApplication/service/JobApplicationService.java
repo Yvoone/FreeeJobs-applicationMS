@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.freeejobs.jobApplication.model.JobApplication;
 import com.freeejobs.jobApplication.repository.JobApplicationRepository;
+import com.freeejobs.jobApplication.constant.JobApplicationStatusEnum;
 import com.freeejobs.jobApplication.dto.JobApplicationDTO;
 
 @Service
@@ -45,7 +46,7 @@ public class JobApplicationService {
 		jobApp.setApplicantId(jobAppDTO.getApplicantId());
 		jobApp.setJobId(jobAppDTO.getJobId());
 		jobApp.setDescription(jobAppDTO.getDescription());
-		jobApp.setStatus("PA");
+		jobApp.setStatus(JobApplicationStatusEnum.PENDING_ACCEPTANCE.getCode());
 		jobApp.setDateCreated(currDate);
 		jobApp.setDateUpdated(currDate);
 
@@ -53,10 +54,10 @@ public class JobApplicationService {
 	}
 
 	public JobApplication setAppStatus(JobApplicationDTO jobAppDTO) {
-		if (jobAppDTO.getStatus().equals("A")) {
-			updateAllApplicants(jobAppDTO.getJobId(), "R");
+		if (jobAppDTO.getStatus().equals(JobApplicationStatusEnum.ACCEPTED.getCode())) {
+			updateAllApplicants(jobAppDTO.getJobId(), JobApplicationStatusEnum.REJECTED.getCode());
 		}
-		else if (!jobAppDTO.getStatus().equals("R")) {
+		else if (!jobAppDTO.getStatus().equals(JobApplicationStatusEnum.REJECTED.getCode())) {
 			return null;
 		}
 
@@ -70,7 +71,7 @@ public class JobApplicationService {
 	public JobApplication closeAppStatus(JobApplicationDTO jobAppDTO) {
 		JobApplication jobApp = new JobApplication();
 		jobApp.setStatus(jobAppDTO.getStatus());
-		if (jobAppDTO.getStatus().equals("C")) {
+		if (jobAppDTO.getStatus().equals(JobApplicationStatusEnum.CLOSED.getCode())) {
 			updateAllApplicants(jobAppDTO.getJobId(), jobAppDTO.getStatus());
 		}
 		else {
@@ -89,7 +90,7 @@ public class JobApplicationService {
 	}
 
 	public List<JobApplication> listAcceptedJobApplicationByApplicantId(long applicantId) {
-		return jobApplicationRepository.findAllJobApplicationByApplicantIdAndStatus(applicantId, "A");
+		return jobApplicationRepository.findAllJobApplicationByApplicantIdAndStatus(applicantId, JobApplicationStatusEnum.ACCEPTED.getCode());
 	}
 
 	public List<JobApplication> listJobApplicationByApplicantIdAndStatus(long applicantId, String status) {
@@ -100,6 +101,9 @@ public class JobApplicationService {
 			return jobApplicationRepository.findAllJobApplicationByApplicantIdAndStatus(applicantId, status);
 		}
 
+	}
+	public boolean isId(String id) {
+		return String.valueOf(id).matches("[0-9]+");
 	}
 
 }
