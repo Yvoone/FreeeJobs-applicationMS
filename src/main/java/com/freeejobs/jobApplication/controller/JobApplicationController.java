@@ -172,11 +172,18 @@ public class JobApplicationController {
 		JobApplication applyjob = null;
 		APIResponse resp = new APIResponse();
 		Status responseStatus = new Status(Status.Type.OK, "Account login success.");
-		//TODO need to check if applicant apply alr a not similar to commented codes below
 
 		List<String> errors = new ArrayList<String>();
 		
 		try {
+			//if applied before alr straight away return
+			JobApplication jobApplication = jobApplicationService.getJobApplicationByJobIdAndApplicantId(jobAppDTO.getJobId(),jobAppDTO.getApplicantId());
+			if(jobApplication!=null) {
+				responseStatus = new Status(Status.Type.INTERNAL_SERVER_ERROR, "Failed to apply Job. User Already Applied For the Job.");
+				LOGGER.error(responseStatus.toString());
+				resp.setStatus(responseStatus);
+				return resp;
+			}
 			if(StringUtils.isBlank(jobAppDTO.getDescription())) {
 				errors.add("Invalid description value");
 			}
@@ -185,11 +192,6 @@ public class JobApplicationController {
 			}
 			if(!jobApplicationService.isId(String.valueOf(jobAppDTO.getJobId()))) {
 				errors.add("Invalid job id value");
-			}
-			
-			JobApplication jobApplication = jobApplicationService.getJobApplicationByJobIdAndApplicantId(jobAppDTO.getJobId(),jobAppDTO.getApplicantId());
-			if(jobApplication!=null) {
-				errors.add("User Already Applied For the Job");
 			}
 			if(errors.isEmpty()) {
 				System.out.println(jobAppDTO.getJobId());
