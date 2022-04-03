@@ -123,6 +123,50 @@ public class JobApplicationController {
 		return resp;
 	}
 
+	@RequestMapping(value="/listJobApplicationByApplicantId", method= RequestMethod.GET)
+	public APIResponse listJobApplicationByApplicantId(HttpServletResponse response,
+			@RequestParam long applicantId) throws URISyntaxException {
+
+		List<JobApplication> jobApplication = null;
+		APIResponse resp = new APIResponse();
+		Status responseStatus = new Status(Status.Type.OK, "Account login success.");
+		List<String> errors = new ArrayList<String>();
+		
+		try {
+			if(!jobApplicationService.isId(String.valueOf(applicantId))){
+				errors.add("Invalid author id value");
+			}
+			if(errors.isEmpty()) {
+				System.out.println(applicantId);
+				jobApplication = jobApplicationService.listJobApplicationByApplicantIdAndStatus(applicantId, "");
+					if(jobApplication == null) {
+						//response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+						//return null;
+						responseStatus = new Status(Status.Type.INTERNAL_SERVER_ERROR, "Failed to list JobApplication By ApplicantId.");
+						LOGGER.error(responseStatus.toString());
+						
+					} else {
+						//response.setStatus(HttpServletResponse.SC_OK);
+						responseStatus = new Status(Status.Type.OK, "Successfully list JobApplication By ApplicantId.");
+					}
+			}else {
+				responseStatus = new Status(Status.Type.INTERNAL_SERVER_ERROR, "Failed to list JobApplication By ApplicantId. Invalid id.");
+				String listOfErrors = errors.stream().map(Object::toString)
+                        .collect(Collectors.joining(", "));
+				LOGGER.error(responseStatus.toString()+" "+listOfErrors);
+			}
+		}catch (Exception e) {
+			System.out.println(e);
+//			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+//			return null;
+			responseStatus = new Status(Status.Type.INTERNAL_SERVER_ERROR, "Failed to list JobApplication By ApplicantId, Exception");
+			LOGGER.error(e.getMessage(), e);
+		}
+		resp.setData(jobApplication);
+		resp.setStatus(responseStatus);
+		return resp;
+	}
+
 	@RequestMapping(value="/listAcceptedApplicantsByJobId", method= RequestMethod.GET)
 	public APIResponse listAcceptedApplicantsByJobId(HttpServletResponse response,
 			@RequestParam long jobId) throws URISyntaxException {
