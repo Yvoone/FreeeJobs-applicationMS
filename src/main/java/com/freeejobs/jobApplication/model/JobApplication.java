@@ -100,4 +100,11 @@ public class JobApplication {
 		this.dateUpdated = dateUpdated;
 	}
 
+	@Override
+	public String toString() {
+		return "JobApplication [jobId=" + jobId + ", applicantId=" + applicantId + ", description="
+				+ description + ", status=" + status + ", dateCreated=" + dateCreated + ", dateUpdated=" + dateUpdated
+				+ "]";
+	}
+
 }

@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.freeejobs.jobApplication.model.JobApplication;
+import com.freeejobs.jobApplication.model.JobApplicationAudit;
+import com.freeejobs.jobApplication.repository.JobApplicationAuditRepository;
 import com.freeejobs.jobApplication.repository.JobApplicationRepository;
+import com.freeejobs.jobApplication.constant.AuditEnum;
 import com.freeejobs.jobApplication.constant.JobApplicationStatusEnum;
 import com.freeejobs.jobApplication.dto.JobApplicationDTO;
 
@@ -20,6 +23,9 @@ public class JobApplicationService {
 
 	@Autowired
 	private JobApplicationRepository jobApplicationRepository;
+	
+	@Autowired
+	private JobApplicationAuditRepository jobApplicationAuditRepository;
 
 	public JobApplication getJobApplicationById(long jobId) {
 		return jobApplicationRepository.findById(jobId);
@@ -50,7 +56,9 @@ public class JobApplicationService {
 		jobApp.setDateCreated(currDate);
 		jobApp.setDateUpdated(currDate);
 
-		return jobApplicationRepository.save(jobApp);
+		JobApplication addedJobApp = jobApplicationRepository.save(jobApp);
+		insertAudit(addedJobApp, AuditEnum.INSERT.getCode());
+		return addedJobApp;
 	}
 
 	public JobApplication setAppStatus(JobApplicationDTO jobAppDTO) {
@@ -64,8 +72,10 @@ public class JobApplicationService {
 		JobApplication jobApp = getJobApplicationByJobIdAndApplicantId(jobAppDTO.getJobId(), jobAppDTO.getApplicantId());
 		jobApp.setStatus(jobAppDTO.getStatus());
 		jobApp.setDateUpdated(new Date());
-
-		return jobApplicationRepository.save(jobApp);
+		
+		JobApplication updatedJobApp = jobApplicationRepository.save(jobApp);
+		insertAudit(updatedJobApp, AuditEnum.UPDATE.getCode());
+		return updatedJobApp;
 	}
 
 	public JobApplication closeAppStatus(JobApplicationDTO jobAppDTO) {
@@ -78,11 +88,17 @@ public class JobApplicationService {
 			return null;
 		}
 		jobApp.setDateUpdated(new Date());
-		return jobApplicationRepository.save(jobApp);
+		JobApplication updatedJobApp = jobApplicationRepository.save(jobApp);
+		insertAudit(updatedJobApp, AuditEnum.UPDATE.getCode());
+		return updatedJobApp;
 	}
 
 	private void updateAllApplicants(long jobId, String status) {
 		jobApplicationRepository.updateAllAppStatusbyJobId(jobId, status, new Date());
+		List<JobApplication> updatedApplicants = jobApplicationRepository.findAllJobApplicationByJobIdAndStatus(jobId, status);
+		for(JobApplication updatedApplicant: updatedApplicants) {
+			insertAudit(updatedApplicant, AuditEnum.UPDATE.getCode());
+		}
 	}
 
 	public List<JobApplication> listJobApplicationByApplicantId(long applicantId) {
@@ -104,6 +120,17 @@ public class JobApplicationService {
 	}
 	public boolean isId(String id) {
 		return String.valueOf(id).matches("[0-9]+");
+	}
+	
+	public JobApplicationAudit insertAudit(JobApplication jobApplication, String opsType) {
+		JobApplicationAudit newAuditEntry = new JobApplicationAudit();
+		newAuditEntry.setAuditData(jobApplication.toString());
+		newAuditEntry.setOpsType(opsType);
+		newAuditEntry.setDateCreated(new Date());
+		//TODO currently set to applicantId but should be the user of acct
+		newAuditEntry.setCreatedBy(String.valueOf(jobApplication.getApplicantId()));
+		
+		return jobApplicationAuditRepository.save(newAuditEntry);
 	}
 
 }
