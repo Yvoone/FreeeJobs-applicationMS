@@ -86,7 +86,7 @@ public class JobApplicationController {
 		List<String> errors = new ArrayList<String>();
 		
 		try {
-			if(!StringUtils.isEmpty(status)&&!JobApplicationStatusEnum.Constants.JOB_LISTING_STATUS_LIST.contains(status)) {
+			if(jobApplicationService.isStatusInvalid(status)) {
 				errors.add("Invalid status value");
 			}
 			if(!jobApplicationService.isId(String.valueOf(applicantId))){
@@ -228,7 +228,7 @@ public class JobApplicationController {
 				resp.setStatus(responseStatus);
 				return resp;
 			}
-			if(StringUtils.isBlank(jobAppDTO.getDescription())) {
+			if(jobApplicationService.isBlank(jobAppDTO.getDescription())) {
 				errors.add("Invalid description value");
 			}
 			if(!jobApplicationService.isId(String.valueOf(jobAppDTO.getApplicantId()))) {
@@ -282,7 +282,7 @@ public class JobApplicationController {
 		List<String> errors = new ArrayList<String>();
 		
 		try {
-			if(!JobApplicationStatusEnum.Constants.JOB_LISTING_STATUS_LIST.contains(jobAppDTO.getStatus())) {
+			if(jobApplicationService.isStatusInvalid(jobAppDTO.getStatus())) {
 				errors.add("Invalid status value");
 			}
 			if(!jobApplicationService.isId(String.valueOf(jobAppDTO.getApplicantId()))) {
@@ -334,7 +334,7 @@ public class JobApplicationController {
 		List<String> errors = new ArrayList<String>();
 
 		try {
-			if (!JobApplicationStatusEnum.Constants.JOB_LISTING_STATUS_LIST.contains(jobAppDTO.getStatus())) {
+			if (jobApplicationService.isStatusInvalid(jobAppDTO.getStatus())) {
 				errors.add("Invalid status value");
 			}
 			if (!jobApplicationService.isId(String.valueOf(jobAppDTO.getJobId()))) {

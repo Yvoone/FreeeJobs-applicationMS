@@ -19,13 +19,25 @@ public class JobApplicationDTO {
 	public long getJobId() {
 		return jobId;
 	}
+	
+	public void setJobId(long jobId) {
+		this.jobId = jobId;
+	}
 
 	public long getApplicantId() {
 		return applicantId;
 	}
+	
+	public void setApplicantId(long applicantId) {
+		this.applicantId = applicantId;
+	}
 
 	public String getDescription() {
 		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getStatus() {
