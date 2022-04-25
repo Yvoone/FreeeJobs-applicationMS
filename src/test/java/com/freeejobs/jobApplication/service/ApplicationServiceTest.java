@@ -1,4 +1,4 @@
-package com.freeejobs.application.service;
+package com.freeejobs.jobApplication.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -32,7 +32,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.freeejobs.application.controller.ApplicationFixture;
+import com.freeejobs.jobApplication.controller.ApplicationFixture;
 import com.freeejobs.jobApplication.WebConfig;
 import com.freeejobs.jobApplication.constant.AuditEnum;
 import com.freeejobs.jobApplication.constant.JobApplicationStatusEnum;

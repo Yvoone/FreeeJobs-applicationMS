@@ -1,4 +1,4 @@
-package com.freeejobs.application;
+package com.freeejobs.jobApplication;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -7,7 +7,7 @@ import com.freeejobs.jobApplication.JobAppApplication;
 
 
 @SpringBootTest(classes=JobAppApplication.class)
-class ApplicationTests {
+class JobAppApplicationTests {
 
 	@Test
 	void contextLoads() {
