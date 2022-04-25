@@ -11,7 +11,7 @@
 	<groupId>com.freejobs</groupId>
 	<artifactId>jobApplication</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>jobApplication</name>
 	<description>FreeeJobs Job Application Microservice</description>
 	<properties>
