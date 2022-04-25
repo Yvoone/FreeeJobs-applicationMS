@@ -6,12 +6,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.freeejobs.jobApplication.JobAppApplication;
 
 
-@SpringBootTest(classes=JobAppApplication.class)
+@SpringBootTest
 class JobAppApplicationTests {
 
 	@Test
 	void contextLoads() {
-		JobAppApplication.main(new String[] {});
+		/* JobAppApplication.main(new String[] {}); */
 	}
 
 }
