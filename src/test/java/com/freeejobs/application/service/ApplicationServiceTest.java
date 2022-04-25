@@ -8,6 +8,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.List;
@@ -271,6 +272,16 @@ public class ApplicationServiceTest {
         assertEquals(JobApplicationStatusEnum.ACCEPTED.getDescription(), "Test");
         assertEquals(JobApplicationStatusEnum.ACCEPTED.getCode(), "A");
 
+    }
+	
+	@Test
+    void testUpdateAllApplicants() throws Exception {
+		Method method = JobApplicationService.class.getDeclaredMethod("updateAllApplicants", long.class, String.class);
+		method.setAccessible(true);
+		//IAMService iamService = new IAMService();
+		method.invoke(jobApplicationService, Long.valueOf(1), JobApplicationStatusEnum.CLOSED.getCode());
+		verify(jobApplicationRepository, Mockito.times(1)).findAllJobApplicationByJobIdAndStatus(Long.valueOf(1), JobApplicationStatusEnum.CLOSED.getCode());
+		//verify(jobApplicationService, Mockito.times(1)).insertAudit(jobApplication, AuditEnum.UPDATE.getCode());
     }
 
 }
