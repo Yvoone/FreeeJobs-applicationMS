@@ -1,4 +1,4 @@
-package com.freeejobs.application.controller;
+package com.freeejobs.jobApplication.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
