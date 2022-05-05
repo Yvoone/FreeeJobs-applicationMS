@@ -29,7 +29,7 @@ import com.freeejobs.jobApplication.dto.JobApplicationDTO;
 
 @RestController
 @RequestMapping(value="/jobApplication")
-@CrossOrigin
+@CrossOrigin("https://freeejobs-web.herokuapp.com")
 public class JobApplicationController {
 
 	private static Logger LOGGER = LogManager.getLogger(JobApplicationController.class);
@@ -109,7 +109,7 @@ public class JobApplicationController {
 				responseStatus = new Status(Status.Type.INTERNAL_SERVER_ERROR, "Failed to list JobApplication By ApplicantId And Status. Invalid status or id.");
 				String listOfErrors = errors.stream().map(Object::toString)
                         .collect(Collectors.joining(", "));
-				LOGGER.error(status.toString()+" "+listOfErrors);
+				LOGGER.error(listOfErrors);
 			}
 		}catch (Exception e) {
 			System.out.println(e);
