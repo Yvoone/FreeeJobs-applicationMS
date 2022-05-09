@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Map;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -318,10 +319,11 @@ public class JobApplicationController {
 						//response.setStatus(HttpServletResponse.SC_OK);
 						try {
 							String statusText = jobApplicationService.getJobAppStatusConst(jobAppDTO);
-							NoteDTO note = null; 
-							note.setContent("Your Application have been " + statusText);
+							NoteDTO note = new NoteDTO(); 
+							String myText = "Your Application have been " + statusText;
+							note.setContent(myText);
 							note.setSubject("Freeejobs");
-							Map<String, String> data = null;
+							Map<String, String> data = new HashMap<String, String>();
 							data.put("key1","val1");
 							note.setData(data);
 							String token = jobAppDTO.getToken();
