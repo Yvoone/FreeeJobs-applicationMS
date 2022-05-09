@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,6 +27,12 @@ import com.freeejobs.jobApplication.response.APIResponse;
 import com.freeejobs.jobApplication.response.Status;
 import com.freeejobs.jobApplication.constant.JobApplicationStatusEnum;
 import com.freeejobs.jobApplication.dto.JobApplicationDTO;
+import com.freeejobs.jobApplication.dto.NoteDTO;
+
+import com.freeejobs.jobApplication.service.FirebaseMessagingService;
+import org.springframework.stereotype.Controller;
+import com.google.firebase.messaging.FirebaseMessagingException;
+
 
 @RestController
 @RequestMapping(value="/jobApplication")
@@ -36,6 +43,12 @@ public class JobApplicationController {
 	
 	@Autowired
 	private JobApplicationService jobApplicationService;
+
+	private final FirebaseMessagingService firebaseService;
+
+	public JobApplicationController(FirebaseMessagingService firebaseService) {
+        this.firebaseService = firebaseService;
+    }
 
 	@RequestMapping(value="/listApplicantsByJobId", method= RequestMethod.GET)
 	public APIResponse listJobApplicantsByJobId(HttpServletResponse response,
@@ -302,6 +315,21 @@ public class JobApplicationController {
 						
 					} else {
 						//response.setStatus(HttpServletResponse.SC_OK);
+						try {
+							String statusText = jobApplicationService.getJobAppStatusConst(jobAppDTO);
+							NoteDTO note = null; 
+							note.setContent("Your Application have been " + statusText);
+							note.setSubject("Freeejobs");
+							Map<String, String> data = null;
+							data.put("key1","val1");
+							note.setData(data);
+							String token = jobAppDTO.getToken();
+							this.firebaseService.sendNotification(note, token);
+						}
+						catch(Exception e) {
+							LOGGER.error(e.getMessage(), e);
+						}
+						
 						responseStatus = new Status(Status.Type.OK, "Successfully set Application Status.");
 					}
 			}else {

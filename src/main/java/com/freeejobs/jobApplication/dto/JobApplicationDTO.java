@@ -7,6 +7,7 @@ public class JobApplicationDTO {
 	private long applicantId;
 	private String status;
     private String description;
+	private String token;
 
     public long getId() {
 		return id;
@@ -46,5 +47,13 @@ public class JobApplicationDTO {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 }

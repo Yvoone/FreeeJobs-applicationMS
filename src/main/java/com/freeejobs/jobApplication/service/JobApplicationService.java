@@ -76,7 +76,19 @@ public class JobApplicationService {
 		
 		JobApplication updatedJobApp = jobApplicationRepository.save(jobApp);
 		insertAudit(updatedJobApp, AuditEnum.UPDATE.getCode());
+		
 		return updatedJobApp;
+	}
+
+	public String getJobAppStatusConst(JobApplicationDTO jobAppDTO) {
+		if (jobAppDTO.getStatus().equals(JobApplicationStatusEnum.ACCEPTED.getCode())) {
+			return JobApplicationStatusEnum.ACCEPTED.getDescription();
+		}
+		else if (!jobAppDTO.getStatus().equals(JobApplicationStatusEnum.REJECTED.getCode())) {
+			return JobApplicationStatusEnum.REJECTED.getDescription();
+		}
+
+		return "";
 	}
 
 	public JobApplication closeAppStatus(JobApplicationDTO jobAppDTO) {
