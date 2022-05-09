@@ -41,13 +41,14 @@ public class JobApplicationController {
 
 	private static Logger LOGGER = LogManager.getLogger(JobApplicationController.class);
 	
-	@Autowired
+	// @Autowired
 	private JobApplicationService jobApplicationService;
 
 	private final FirebaseMessagingService firebaseService;
 
-	public JobApplicationController(FirebaseMessagingService firebaseService) {
+	public JobApplicationController(FirebaseMessagingService firebaseService, JobApplicationService jobApplicationService) {
         this.firebaseService = firebaseService;
+		this.jobApplicationService = jobApplicationService;
     }
 
 	@RequestMapping(value="/listApplicantsByJobId", method= RequestMethod.GET)

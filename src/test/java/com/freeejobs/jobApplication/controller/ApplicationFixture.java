@@ -36,6 +36,7 @@ public class ApplicationFixture {
 		jobAppDTO.setApplicantId(Long.valueOf(1));
 		jobAppDTO.setStatus(JobApplicationStatusEnum.PENDING_ACCEPTANCE.getCode());
 		jobAppDTO.setDescription("Test Description");
+		jobAppDTO.setToken("Test Token");
         
 
         return jobAppDTO;
@@ -49,6 +50,7 @@ public class ApplicationFixture {
 		jobAppDTO.setApplicantId(Long.valueOf(1));
 		jobAppDTO.setStatus(JobApplicationStatusEnum.ACCEPTED.getCode());
 		jobAppDTO.setDescription("Test Description");
+		jobAppDTO.setToken("Test Token");
         
 
         return jobAppDTO;
@@ -62,6 +64,7 @@ public class ApplicationFixture {
 		jobAppDTO.setApplicantId(Long.valueOf(1));
 		jobAppDTO.setStatus(JobApplicationStatusEnum.REJECTED.getCode());
 		jobAppDTO.setDescription("Test Description");
+		jobAppDTO.setToken("Test Token");
         
 
         return jobAppDTO;
