@@ -272,7 +272,7 @@ public class JobApplicationController {
 		return resp;
 	}
 
-	@RequestMapping(value="/setAppStatus", method= RequestMethod.POST)
+	@RequestMapping(value={"/setAppStatus","/android/setAppStatus"}, method= RequestMethod.POST)
 	public APIResponse setApplicationStatus(HttpServletResponse response,
 			@RequestBody JobApplicationDTO jobAppDTO) throws URISyntaxException {
 
